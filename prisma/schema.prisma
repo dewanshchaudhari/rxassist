@@ -1,0 +1,253 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider        = "prisma-client-js"
+    previewFeatures = ["fullTextSearch", "fullTextIndex"]
+}
+
+datasource db {
+    provider = "mysql"
+    // NOTE: When using mysql or sqlserver, uncomment the @db.Text annotations in model Account below
+    // Further reading:
+    // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
+    // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
+    url      = env("DATABASE_URL")
+}
+
+// Necessary for Next auth
+model Account {
+    id                String  @id @default(cuid())
+    userId            String
+    type              String
+    provider          String
+    providerAccountId String
+    refresh_token     String? @db.Text
+    access_token      String? // @db.Text
+    expires_at        Int?
+    token_type        String?
+    scope             String?
+    id_token          String? // @db.Text
+    session_state     String?
+    user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@unique([provider, providerAccountId])
+}
+
+model Session {
+    id           String   @id @default(cuid())
+    sessionToken String   @unique
+    userId       String
+    expires      DateTime
+    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+    id        String    @id @default(cuid())
+    name      String?
+    phone     String    @unique
+    pincode   String?
+    city      String?
+    state     String?
+    image     String?
+    lat       String?
+    lon       String?
+    isDeleted Boolean   @default(false)
+    accounts  Account[]
+    sessions  Session[]
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+}
+
+model VerificationToken {
+    identifier String
+    token      String   @unique
+    expires    DateTime
+
+    @@unique([identifier, token])
+}
+
+model TruecallerAuth {
+    id          String   @id @default(cuid())
+    requestId   String   @unique
+    status      String
+    accessToken String?
+    endpoint    String?
+    createdAt   DateTime @default(now())
+
+    @@index([requestId])
+}
+
+model OtpAuth {
+    id        Int      @id @default(autoincrement())
+    phone     String   @unique
+    otp       String
+    createdAt DateTime @default(now())
+
+    @@index([phone])
+}
+
+model Shopkeeper {
+    id              Int        @id @default(autoincrement())
+    code            String
+    name            String
+    shopName        String
+    address         String?    @db.Text
+    pincode         String
+    lat             String
+    lon             String
+    mapAddress      String?    @db.Text
+    website         String?
+    phone           String?
+    whatsapp        String?
+    open24          Boolean    @default(false)
+    operationalTime String
+    minOrder        Int        @default(0)
+    deliveryCharge  Int        @default(0)
+    discount        String?
+    delivery        Delivery[]
+}
+
+model Medicine {
+    id                        String                @id @default(cuid())
+    sno                       Int
+    name                      String
+    productId                 String
+    mrp                       String
+    sp                        String
+    discount                  String
+    savings                   String
+    cheapest                  Boolean
+    prescriptionRequired      Boolean
+    topSelling                Boolean
+    imageLink                 String?
+    packaging                 String                @db.Text
+    description               String                @db.Text
+    storage                   String                @db.Text
+    sideEffects               String                @db.Text
+    precautions               String                @db.Text
+    content1                  String                @db.Text
+    content2                  String                @db.Text
+    content3                  String                @db.Text
+    content4                  String                @db.Text
+    content5                  String                @db.Text
+    content6                  String                @db.Text
+    SuggestionMedicine        SuggestionMedicine[]  @relation("medicine")
+    SuggestionMedicineOption  SuggestionMedicine[]  @relation("suggestionMedicine")
+    Salt                      Salt?                 @relation(fields: [saltId], references: [id])
+    saltId                    String?
+    Brand                     Brand?                @relation(fields: [brandId], references: [id])
+    brandId                   String?
+    Category                  Category?             @relation(fields: [categoryId], references: [id])
+    categoryId                String?
+    Subcategory               Subcategory?          @relation(fields: [subcategoryId], references: [id])
+    subcategoryId             String?
+    Manufacturer              Manufacturer?         @relation(fields: [manufacturerId], references: [id])
+    manufacturerId            String?
+    Marketer                  Marketer?             @relation(fields: [marketerId], references: [id])
+    marketerId                String?
+    AlternativeMedicine       AlternativeMedicine[] @relation("medicine")
+    AlternativeMedicineOption AlternativeMedicine[] @relation("alternateMedicine")
+
+    @@index([name])
+    @@fulltext([name, description])
+}
+
+model SuggestionMedicine {
+    id                   String   @id @default(cuid())
+    medicine             Medicine @relation("medicine", fields: [medicineId], references: [id])
+    medicineId           String
+    suggestionMedicine   Medicine @relation("suggestionMedicine", fields: [suggestionMedicineId], references: [id])
+    suggestionMedicineId String
+    createdAt            DateTime @default(now())
+    updatedAt            DateTime @updatedAt
+
+    @@index([medicineId])
+}
+
+model Salt {
+    id        String     @id @default(cuid())
+    code      Int
+    salt      String     @db.Text
+    medicines Medicine[]
+    createdAt DateTime   @default(now())
+    updatedAt DateTime   @updatedAt
+
+    @@index([code])
+}
+
+model Brand {
+    id        String     @id @default(cuid())
+    code      Int
+    brand     String
+    medicines Medicine[]
+    createdAt DateTime   @default(now())
+    updatedAt DateTime   @updatedAt
+
+    @@index([brand])
+    @@index([code])
+}
+
+model Category {
+    id        String     @id @default(cuid())
+    category  String
+    medicines Medicine[]
+    createdAt DateTime   @default(now())
+    updatedAt DateTime   @updatedAt
+
+    @@index([category])
+}
+
+model Subcategory {
+    id          String     @id @default(cuid())
+    subcategory String
+    medicines   Medicine[]
+    createdAt   DateTime   @default(now())
+    updatedAt   DateTime   @updatedAt
+
+    @@index([subcategory])
+}
+
+model Manufacturer {
+    id           String     @id @default(cuid())
+    manufacturer String     @db.Text
+    medicine     Medicine[]
+    createdAt    DateTime   @default(now())
+    updatedAt    DateTime   @updatedAt
+}
+
+model Marketer {
+    id        String     @id @default(cuid())
+    marketer  String
+    medicines Medicine[]
+    createdAt DateTime   @default(now())
+    updatedAt DateTime   @updatedAt
+
+    @@index([marketer])
+}
+
+model Delivery {
+    id                 String      @id @default(cuid())
+    pincode            String
+    prescriptionNumber String
+    city               String
+    state              String
+    createdAt          DateTime    @default(now())
+    updatedAt          DateTime    @updatedAt
+    Shopkeeper         Shopkeeper? @relation(fields: [shopkeeperId], references: [id])
+    shopkeeperId       Int?
+
+    @@index([pincode])
+}
+
+model AlternativeMedicine {
+    id                  String   @id @default(cuid())
+    medicine            Medicine @relation("medicine", fields: [medicineId], references: [id])
+    medicineId          String
+    alternateMedicine   Medicine @relation("alternateMedicine", fields: [alternateMedicineId], references: [id])
+    alternateMedicineId String
+    createdAt           DateTime @default(now())
+    updatedAt           DateTime @updatedAt
+
+    @@index([medicineId])
+}
