@@ -1,8 +1,15 @@
-import PhoneAuth from "@/components/PhoneAuth";
+import PhoneAuthDialog from "@/components/PhoneAuthDialog";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 export default function Login() {
+  const router = useRouter();
+  const { status } = useSession();
+  React.useEffect(() => {
+    if (status === "authenticated") router.push("/home");
+  }, [router, status]);
   return (
     <div className="flex h-[100svh] flex-col items-center justify-between">
       <div className="h-full w-full bg-[url('/bg.jpg')] bg-cover"></div>
@@ -14,7 +21,7 @@ export default function Login() {
           </span>
           <div className="flex-grow border-t border-primary"></div>
         </div>
-        <PhoneAuth />
+        {status === "unauthenticated" && <PhoneAuthDialog open={true} />}
         <p className="pt-4 text-center text-primary">
           By continuing, you agree to our{" "}
           <Link href="/privacy-policy" className="underline underline-offset-2">

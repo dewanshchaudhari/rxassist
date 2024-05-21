@@ -11,7 +11,6 @@ import {
 } from "next-auth";
 import { type Adapter } from "next-auth/adapters";
 import CredentialsProvider from "next-auth/providers/credentials";
-
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
  * object and keep type safety.
@@ -22,8 +21,11 @@ declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
       id: string;
-      // ...other properties
-      // role: UserRole;
+      phone: string;
+      name: string;
+      picode: string;
+      // timestamp: string;
+      accessToken: string;
     } & DefaultSession["user"];
   }
 
@@ -40,13 +42,19 @@ declare module "next-auth" {
  */
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    session: ({ session, user }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: user.id,
-      },
-    }),
+    jwt: ({ token, user }) => {
+      return { ...token, ...user };
+    },
+    session: ({ session, token }) => {
+      // session.user.waId = token.waId as string;
+      session.user.accessToken = token.accessToken as string;
+      session.user.id = token.id as string;
+      session.user.picode = token.pincode as string;
+      // session.user.timestamp = token.timestamp as string;
+      session.user.name = token.name!;
+      session.user.phone = token.phone as string;
+      return session;
+    },
   },
   adapter: PrismaAdapter(db) as Adapter,
   providers: [
@@ -60,7 +68,7 @@ export const authOptions: NextAuthOptions = {
       authorize: async (credentials) => {
         try {
           if (!credentials) return null;
-          if (credentials.requestId) {
+          if (!credentials.otp) {
             try {
               const truecallerAuth = await db.truecallerAuth.findFirst({
                 where: {
@@ -115,14 +123,17 @@ export const authOptions: NextAuthOptions = {
                 accessToken: jwt.sign(
                   {
                     id: id,
+                    phone: phone,
+                    name: name,
+                    pincode,
                   },
                   env.NEXTAUTH_SECRET!,
                   {
                     expiresIn: 86400 * 30,
                   },
                 ),
-                waNumber: phone,
-                waName: name,
+                phone: phone,
+                name: name,
                 pincode,
               };
             } catch (error) {
@@ -130,7 +141,6 @@ export const authOptions: NextAuthOptions = {
               throw new Error("Error check logs");
             }
           }
-          console.log(credentials);
           const otp = await db.otpAuth.findUnique({
             where: {
               phone: credentials.phone,
@@ -164,8 +174,8 @@ export const authOptions: NextAuthOptions = {
                 expiresIn: 86400 * 30,
               },
             ),
-            waNumber: phone,
-            waName: name,
+            phone: phone,
+            name: name,
             pincode,
           };
         } catch (error) {
@@ -183,6 +193,11 @@ export const authOptions: NextAuthOptions = {
      * @see https://next-auth.js.org/providers/github
      */
   ],
+  secret: env.NEXTAUTH_SECRET,
+  session: {
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 Days
+  },
 };
 
 /**

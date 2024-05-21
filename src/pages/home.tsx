@@ -19,9 +19,12 @@ import React from "react";
 import { useLocalStorage } from "usehooks-ts";
 import { Search } from "@/components/search";
 import ShopkeeperCard from "@/components/shopkeeperCard";
+import { env } from "@/env";
 
 export default function Home() {
   const [isOpen, setIsOpen] = React.useState(false);
+  const [zipcode, setZipcode] = React.useState("");
+
   const [location, setLocation] = useLocalStorage<{
     pincode: string | null;
     city: string | null;
@@ -48,6 +51,19 @@ export default function Home() {
         location.pincode !== null,
     },
   );
+  const { mutate: zip, isPending: isLoadingZip } =
+    api.user.getLocationFromZipcode.useMutation({
+      onSuccess: (data) => {
+        setLocation({
+          city: data.city,
+          pincode: data.pincode,
+          state: data.state,
+          lat: data.lat,
+          lon: data.lon,
+        });
+        setIsOpen(false);
+      },
+    });
   const [loading, setLoading] = React.useState(false);
   const { data } = api.user.getLocationInfo.useQuery(undefined, {
     enabled: location.pincode === null,
@@ -119,7 +135,7 @@ export default function Home() {
       </div>
       <div>
         <h1 className="mt-4 w-full text-center text-2xl font-medium">
-          Save at popular pharmacies
+          Save at Nearby JanAushadhi Kendras
         </h1>
         <div className="flex flex-row items-center justify-center gap-2">
           <MapPin className="h-5 w-5" />
@@ -155,7 +171,13 @@ export default function Home() {
                 <h1 className="text-center text-muted-foreground">OR</h1>
                 <div className="grid w-full max-w-sm items-center gap-1.5 p-4">
                   <Label htmlFor="zipcode">Zipcode</Label>
-                  <Input type="text" id="zipcode" placeholder="Enter zipcode" />
+                  <Input
+                    type="text"
+                    id="zipcode"
+                    placeholder="Enter zipcode"
+                    value={zipcode}
+                    onChange={(e) => setZipcode(e.target.value)}
+                  />
                 </div>
               </div>
               <DrawerFooter>
@@ -165,7 +187,16 @@ export default function Home() {
                       Cancel
                     </Button>
                   </DrawerClose>
-                  <Button className="w-1/2 rounded-full">Submit</Button>
+                  <Button
+                    className="w-1/2 rounded-full"
+                    disabled={isLoadingZip}
+                    onClick={() => {
+                      if (zipcode.length === 6) zip({ pincode: zipcode });
+                    }}
+                  >
+                    {isLoadingZip && <Loader2 className="mr-4 animate-spin" />}
+                    Submit
+                  </Button>
                 </div>
               </DrawerFooter>
             </DrawerContent>
@@ -216,6 +247,20 @@ export default function Home() {
             hot={false}
           />
         ))}
+      <div
+        className="mb-10 flex h-full w-full flex-col items-center justify-between"
+        id="works"
+      >
+        <h1 className="mt-2 text-center text-xl">
+          How {env.NEXT_PUBLIC_APP_NAME} Works
+        </h1>
+        <Image src={"/compare.webp"} alt="" height={1000} width={1000} />
+        <h2 className="mt-2 text-center text-lg">Compare prices</h2>
+        <h3 className="mt-2 text-center">
+          Drug prices vary by pharmacy. Use {env.NEXT_PUBLIC_APP_NAME} to find
+          current prices and discounts.
+        </h3>
+      </div>
     </div>
   );
 }

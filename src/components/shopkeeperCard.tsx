@@ -48,7 +48,7 @@ export default function ShopkeeperCard({
                   className="rounded-full"
                   size={"icon"}
                 >
-                  <Image src={"./web.svg"} alt="web" height={30} width={30} />
+                  <Image src={"/web.svg"} alt="web" height={30} width={30} />
                 </Button>
               </Link>
               <Link href={whatsapp ?? "#"} target="_blank">
@@ -58,7 +58,7 @@ export default function ShopkeeperCard({
                   size={"icon"}
                 >
                   <Image
-                    src={"./whatsapp.svg"}
+                    src={"/whatsapp.svg"}
                     alt="whatsapp"
                     height={30}
                     width={30}

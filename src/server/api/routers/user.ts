@@ -76,6 +76,57 @@ export const userRouter = createTRPCRouter({
         lon: input.log,
       };
     }),
+  getLocationFromZipcode: publicProcedure
+    .input(
+      z.object({
+        pincode: z.string(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const r1 = await axios.get(
+        `https://geocode.maps.co/search?q=${input.pincode}&api_key=${env.GEOCODE_API_KEY}`,
+      );
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+      const data = r1.data.filter((e: { display_name: string }) =>
+        e.display_name.toLowerCase().includes("india"),
+      ) as { lat: string; lon: string }[];
+      const { lat, lon } = data[0] as { lat: string; lon: string };
+      const url = `https://geocode.maps.co/reverse?lat=${lat}&lon=${lon}&api_key=${env.GEOCODE_API_KEY}`;
+      const response = await fetch(url);
+      if (!response.ok)
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+        });
+      const body = (await response.json()) as {
+        place_id: number;
+        licence: string;
+        powered_by: string;
+        osm_type: string;
+        osm_id: number;
+        lat: string;
+        lon: string;
+        display_name: string;
+        address: {
+          residential: string;
+          city_district: string;
+          city: string;
+          village: string;
+          county: string;
+          state_district: string;
+          state: string;
+          postcode: string;
+          country: string;
+          country_code: string;
+        };
+      };
+      return {
+        pincode: body.address.postcode,
+        city: body.address.city,
+        state: body.address.state,
+        lat,
+        lon,
+      };
+    }),
   getNearestShopkeepers: publicProcedure
     .input(
       z.object({

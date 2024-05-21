@@ -1,14 +1,19 @@
+import PhoneAuthDialog from "@/components/PhoneAuthDialog";
 import { UploadDropzone } from "@/utils/uploadthing";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React from "react";
 export default function Upload() {
   const router = useRouter();
-  const { data } = useSession();
-  console.log(data);
+  const [show, setShow] = React.useState(false);
+  const { status } = useSession();
+  React.useEffect(() => {
+    if (status === "unauthenticated") setShow(true);
+  }, [status]);
   return (
     <main className="mt-10 flex min-h-screen flex-col items-center justify-start">
       <h1 className="text-2xl font-semibold">Upload Your Prescription</h1>
+      {show && <PhoneAuthDialog open={show} />}
       <div className="w-full p-4">
         <UploadDropzone
           className="w-full"

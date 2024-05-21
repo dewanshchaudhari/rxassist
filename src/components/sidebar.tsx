@@ -13,7 +13,12 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { env } from "@/env";
-import { BriefcaseMedical, Calendar, Menu } from "lucide-react";
+import {
+  BriefcaseMedical,
+  Calendar,
+  CircleDollarSign,
+  Menu,
+} from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -21,7 +26,7 @@ import React from "react";
 
 export function Sidebar() {
   const [open, setOpen] = React.useState(false);
-  const session = useSession();
+  const { status } = useSession();
   const router = useRouter();
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -34,12 +39,14 @@ export function Sidebar() {
         <SheetHeader>
           <SheetTitle>Welcome to {env.NEXT_PUBLIC_APP_NAME}</SheetTitle>
           <SheetDescription>
-            <Button
-              className="h-12 w-full rounded-full"
-              onClick={() => router.push("/login")}
-            >
-              Login
-            </Button>
+            {status === "unauthenticated" && (
+              <Button
+                className="h-12 w-full rounded-full"
+                onClick={() => router.push("/login")}
+              >
+                Login
+              </Button>
+            )}
             <Separator orientation="horizontal" className="my-4" />
           </SheetDescription>
         </SheetHeader>
@@ -70,9 +77,14 @@ export function Sidebar() {
           <Button
             variant="ghost"
             className="flex w-full flex-row items-center justify-start gap-2 rounded-full"
+            onClick={() => setOpen(false)}
+            asChild
           >
-            <BriefcaseMedical /> Drug savings
+            <Link href="/home#works">
+              <CircleDollarSign /> How {env.NEXT_PUBLIC_APP_NAME} works
+            </Link>
           </Button>
+
           <Button
             variant="ghost"
             className="flex w-full flex-row items-center justify-start gap-2 rounded-full"

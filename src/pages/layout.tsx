@@ -2,6 +2,7 @@ import useMediaQuery from "@/hooks/mediaQuery";
 import { useRouter } from "next/router";
 import React, { type PropsWithChildren } from "react";
 import Nav from "@/components/Nav";
+
 const Layout = ({ children }: PropsWithChildren) => {
   const isMobile = useMediaQuery("(max-width: 640px)");
   const router = useRouter();

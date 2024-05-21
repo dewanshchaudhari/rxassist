@@ -27,6 +27,7 @@ export const env = createEnv({
     WOTMASTER_SECRET: z.string().min(1),
     WOTMASTER_INSTANCE_ID: z.string().min(1),
     UPLOADTHING_SECRET: z.string().min(1),
+    UPLOADTHING_APP_ID: z.string().min(1),
     ADMIN_NUMBER: z.string().min(1),
   },
 
@@ -39,6 +40,7 @@ export const env = createEnv({
     // NEXT_PUBLIC_CLIENTVAR: z.string(),
     NEXT_PUBLIC_TRUECALLER_APP_KEY: z.string().min(1),
     NEXT_PUBLIC_APP_NAME: z.string().min(1),
+    NEXT_PUBLIC_APP_ID: z.string().min(1),
   },
 
   /**
@@ -57,7 +59,9 @@ export const env = createEnv({
     WOTMASTER_SECRET: process.env.WOTMASTER_SECRET,
     WOTMASTER_INSTANCE_ID: process.env.WOTMASTER_INSTANCE_ID,
     UPLOADTHING_SECRET: process.env.UPLOADTHING_SECRET,
+    UPLOADTHING_APP_ID: process.env.UPLOADTHING_APP_ID,
     ADMIN_NUMBER: process.env.ADMIN_NUMBER,
+    NEXT_PUBLIC_APP_ID: process.env.NEXT_PUBLIC_APP_ID,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

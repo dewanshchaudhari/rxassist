@@ -22,27 +22,26 @@ export const otpRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const url = "https://www.fast2sms.com/dev/bulkV2";
       const OTP = generateOTP();
-      const response = await axios.post(
-        url,
-        {
-          variables_values: OTP,
-          route: "otp",
-          numbers: input.nationalNumber,
-        },
-        {
-          headers: {
-            authorization: env.FAST2SMS_API_KEY,
-          },
-        },
-      );
-      console.log(response);
-      const data = response.data as { return: boolean };
-      if (data.return !== true) {
-        new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: "FAILED_TO_SEND_OTP",
-        });
-      }
+      // const response = await axios.post(
+      //   url,
+      //   {
+      //     variables_values: OTP,
+      //     route: "otp",
+      //     numbers: input.nationalNumber,
+      //   },
+      //   {
+      //     headers: {
+      //       authorization: env.FAST2SMS_API_KEY,
+      //     },
+      //   },
+      // );
+      // const data = response.data as { return: boolean };
+      // if (data.return !== true) {
+      //   new TRPCError({
+      //     code: "INTERNAL_SERVER_ERROR",
+      //     message: "FAILED_TO_SEND_OTP",
+      //   });
+      // }
       return ctx.db.otpAuth.upsert({
         where: {
           phone: input.number,
