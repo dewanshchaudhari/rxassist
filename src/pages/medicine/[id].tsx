@@ -163,11 +163,11 @@ export default function Medicine({ params }: { params: { id: string } }) {
           {medicine.AlternativeMedicine.length !== 0 && (
             <div className="flex h-8 flex-row items-center justify-center rounded-t-lg bg-green-600 p-2 text-center text-sm text-white">
               {(
-                ((Number(medicine.sp) -
+                (1 -
                   Number(
                     medicine.AlternativeMedicine[0]?.alternateMedicine.sp,
-                  )) /
-                  Number(medicine.sp)) *
+                  ) /
+                    Number(medicine.mrp)) *
                 100
               ).toFixed(0)}
               {"% "}
@@ -215,17 +215,16 @@ export default function Medicine({ params }: { params: { id: string } }) {
                 )}
                 <Card>
                   <CardContent className="flex h-full flex-row justify-between p-2">
-                    <div className="flex flex-col items-center justify-start text-xs">
+                    <div className="flex flex-col items-center justify-start text-sm">
                       Marketed by
                       <Image src={"/cipla.png"} alt="" width={75} height={75} />
                     </div>
-                    <Separator orientation="vertical" />
-                    <div className="flex flex-col items-center justify-start text-xs">
+                    <div className="flex flex-col items-center justify-start text-sm">
                       Assured by
-                      <Image src={"/plus.svg"} alt="" width={20} height={20} />
+                      <Image src={"/plus.svg"} alt="" width={25} height={25} />
                     </div>
                   </CardContent>
-                  <div className="flex flex-row items-center justify-center gap-2 pb-4 text-xs">
+                  <div className="m-1 flex flex-row items-center justify-center gap-2 rounded-xl border p-2 text-xs">
                     <Lock className="h-4 w-4" />
                     {getRandomNumber(1000, 5000)}+ Customers trust
                   </div>
@@ -260,7 +259,7 @@ export default function Medicine({ params }: { params: { id: string } }) {
           )}
         </div>
       </div>
-      <div className="flex w-full flex-row items-center justify-center gap-4 p-4">
+      <div className="flex w-full flex-col items-center justify-center gap-4 p-10">
         <Button className="w-full" variant="outline">
           Get free Pharmacist consultation
         </Button>

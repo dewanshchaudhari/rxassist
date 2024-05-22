@@ -8,10 +8,7 @@ const Layout = ({ children }: PropsWithChildren) => {
   const router = useRouter();
   if (
     router.pathname === "/price" ||
-    router.pathname === "/terms-and-conditions" ||
-    router.pathname === "/privacy-policy" ||
     router.pathname === "/about" ||
-    router.pathname === "/contact" ||
     router.pathname === "/login"
   ) {
     return <>{children}</>;

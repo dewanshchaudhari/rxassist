@@ -94,11 +94,11 @@ export default function PhoneAuthDialog({ open }: { open: boolean }) {
       {/* <DialogTrigger asChild>
         <Button variant="outline">Edit Profile</Button>
       </DialogTrigger> */}
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="h-64 sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Login</DialogTitle>
         </DialogHeader>
-        <div className="flex h-20 w-full flex-col items-center justify-center">
+        <div className="flex h-20 w-full flex-col items-center justify-center gap-4">
           {!showOtpScreen ? (
             <>
               <div
@@ -122,6 +122,7 @@ export default function PhoneAuthDialog({ open }: { open: boolean }) {
               <Button
                 disabled={!isPossiblePhoneNumber(phone ?? "") || isPending}
                 onClick={sendOtp}
+                className="w-full"
               >
                 {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 Continue

@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { string, z } from "zod";
 
 import {
   createTRPCRouter,
@@ -84,20 +84,26 @@ export const userRouter = createTRPCRouter({
     )
     .mutation(async ({ input }) => {
       const r1 = await axios.get(
-        `https://geocode.maps.co/search?q=${input.pincode}&api_key=${env.GEOCODE_API_KEY}`,
+        `https://api.zipcodestack.com/v1/search?codes=${input.pincode}&country=in`,
+        {
+          headers: {
+            apikey: "01HYH4G0KK32WQSYSKFB81B6GC",
+          },
+        },
       );
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-      const data = r1.data.filter((e: { display_name: string }) =>
-        e.display_name.toLowerCase().includes("india"),
-      ) as { lat: string; lon: string }[];
-      const { lat, lon } = data[0] as { lat: string; lon: string };
-      const url = `https://geocode.maps.co/reverse?lat=${lat}&lon=${lon}&api_key=${env.GEOCODE_API_KEY}`;
-      const response = await fetch(url);
-      if (!response.ok)
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      const { latitude, longitude } = r1.data.results[input.pincode][0] as {
+        latitude: string;
+        longitude: string;
+      };
+      console.log(latitude, longitude);
+      const url = `https://geocode.maps.co/reverse?lat=${latitude}&lon=${longitude}&api_key=${env.GEOCODE_API_KEY}`;
+      const response = await axios.get(url);
+      if (response.status !== 200)
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
         });
-      const body = (await response.json()) as {
+      const body = response.data as {
         place_id: number;
         licence: string;
         powered_by: string;
@@ -119,12 +125,13 @@ export const userRouter = createTRPCRouter({
           country_code: string;
         };
       };
+      console.log(body);
       return {
         pincode: body.address.postcode,
-        city: body.address.city,
+        city: body.address.city ?? body.address.county,
         state: body.address.state,
-        lat,
-        lon,
+        lat: latitude.toString(),
+        lon: longitude.toString(),
       };
     }),
   getNearestShopkeepers: publicProcedure

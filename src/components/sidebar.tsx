@@ -17,7 +17,10 @@ import {
   BriefcaseMedical,
   Calendar,
   CircleDollarSign,
+  EarthLock,
+  FileTerminal,
   Menu,
+  Phone,
 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -85,15 +88,45 @@ export function Sidebar() {
             </Link>
           </Button>
 
-          <Button
+          {/* <Button
             variant="ghost"
             className="flex w-full flex-row items-center justify-start gap-2 rounded-full"
           >
             <BriefcaseMedical /> Drug savings
-          </Button>
+          </Button> */}
         </div>
         <Separator orientation="horizontal" className="my-4" />
         <div className="flex w-full flex-col items-center justify-between gap-2">
+          <Button
+            variant="ghost"
+            className="flex w-full flex-row items-center justify-start gap-2 rounded-full"
+            onClick={() => setOpen(false)}
+            asChild
+          >
+            <Link href="/terms-and-conditions">
+              <FileTerminal /> Terms & Condition
+            </Link>
+          </Button>
+          <Button
+            variant="ghost"
+            className="flex w-full flex-row items-center justify-start gap-2 rounded-full"
+            onClick={() => setOpen(false)}
+            asChild
+          >
+            <Link href="/privacy-policy">
+              <EarthLock /> Privacy Policy
+            </Link>
+          </Button>
+          <Button
+            variant="ghost"
+            className="flex w-full flex-row items-center justify-start gap-2 rounded-full"
+            onClick={() => setOpen(false)}
+            asChild
+          >
+            <Link href="/contact">
+              <Phone /> Contact us
+            </Link>
+          </Button>
           {/* <div className="flex w-full flex-row items-center justify-start gap-2 rounded-full border px-4 py-2 text-sm font-normal shadow-sm">
             <BriefcaseMedical /> Drug savings
           </div>

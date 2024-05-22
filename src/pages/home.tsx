@@ -248,17 +248,37 @@ export default function Home() {
           />
         ))}
       <div
-        className="mb-10 flex h-full w-full flex-col items-center justify-between"
+        className="mb-10 flex h-full w-full flex-col items-center justify-between p-10"
         id="works"
       >
-        <h1 className="mt-2 text-center text-xl">
+        <h1 className="mt-2 text-center text-2xl font-bold">
           How {env.NEXT_PUBLIC_APP_NAME} Works
         </h1>
         <Image src={"/compare.webp"} alt="" height={1000} width={1000} />
-        <h2 className="mt-2 text-center text-lg">Compare prices</h2>
+        <h2 className="mt-2 text-center text-lg font-bold">Compare prices</h2>
         <h3 className="mt-2 text-center">
           Drug prices vary by pharmacy. Use {env.NEXT_PUBLIC_APP_NAME} to find
           current prices and discounts.
+        </h3>
+
+        <h1 className="mt-2 text-center text-xl">Get free coupons</h1>
+        <Image src={"/compare1.svg"} alt="" height={1000} width={1000} />
+        <h2 className="mt-2 text-center text-lg font-bold">Get free coupons</h2>
+        <h3 className="mt-2 text-center">
+          {env.NEXT_PUBLIC_APP_NAME} coupons can help you pay less than the cash
+          price for your prescription.
+        </h3>
+
+        <h1 className="mt-2 text-center text-xl">
+          How {env.NEXT_PUBLIC_APP_NAME} Works
+        </h1>
+        <Image src={"/compare2.webp"} alt="" height={1000} width={1000} />
+        <h2 className="mt-2 text-center text-lg font-bold">
+          Show to your pharmacist
+        </h2>
+        <h3 className="mt-2 text-center">
+          It&#39;s easy. Just bring your free coupon to the pharmacy when
+          picking up your prescription.
         </h3>
       </div>
     </div>
