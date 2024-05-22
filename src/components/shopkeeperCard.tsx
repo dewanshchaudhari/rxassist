@@ -5,7 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { calculateDistance, cn } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -15,10 +15,7 @@ export default function ShopkeeperCard({
   website,
   whatsapp,
   discount,
-  lat,
-  lon,
-  l1,
-  l2,
+  distance,
   hot,
 }: {
   shopName: string;
@@ -26,10 +23,7 @@ export default function ShopkeeperCard({
   website: string | null;
   whatsapp: string | null;
   discount: string | null;
-  lat: string;
-  lon: string;
-  l1: string;
-  l2: string;
+  distance: string | null;
   hot?: boolean;
 }) {
   return (
@@ -44,15 +38,7 @@ export default function ShopkeeperCard({
       <CardHeader className="rounded-xl bg-white">
         <CardTitle className="flex flex-row items-center justify-between">
           <h2>{shopName}</h2>
-          <p className="text-sm text-muted-foreground">
-            {calculateDistance(
-              Number(lat),
-              Number(lon),
-              Number(l1),
-              Number(l2),
-            ).toFixed(0)}{" "}
-            KM
-          </p>
+          <p className="text-sm text-muted-foreground">{distance} KM</p>
         </CardTitle>
         <CardDescription className="rounded-xl bg-white">
           {address ?? ""}

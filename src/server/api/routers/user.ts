@@ -150,25 +150,35 @@ export const userRouter = createTRPCRouter({
           Shopkeeper: true,
         },
       });
-      if (!input.lat && !input.lon)
-        return {
-          shops: shopkeepers.filter((e) => e.id !== shopkeeper?.Shopkeeper?.id),
-          pref: shopkeeper,
-        };
+      const a = {
+        ...shopkeeper,
+        distance:
+          input.lat && input.lon
+            ? calculateDistance(
+                Number(input.lat),
+                Number(input.lon),
+                Number(shopkeeper?.Shopkeeper?.lat),
+                Number(shopkeeper?.Shopkeeper?.lon),
+              )
+            : 0,
+      };
       const nearestShopkeeper = shopkeepers
         .map((e) => {
           return {
             ...e,
-            distance: calculateDistance(
-              Number(input.lat),
-              Number(input.lon),
-              Number(e.lat),
-              Number(e.lon),
-            ),
+            distance:
+              input.lat && input.lon
+                ? calculateDistance(
+                    Number(input.lat),
+                    Number(input.lon),
+                    Number(e.lat),
+                    Number(e.lon),
+                  )
+                : 0,
           };
         })
         .sort((a, b) => a.distance - b.distance)
         .filter((e) => e.id !== shopkeeper?.Shopkeeper?.id);
-      return { shops: nearestShopkeeper, pref: shopkeeper };
+      return { shops: nearestShopkeeper, pref: a };
     }),
 });

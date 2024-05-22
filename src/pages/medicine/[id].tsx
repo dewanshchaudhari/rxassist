@@ -282,6 +282,7 @@ export default function Medicine({ params }: { params: { id: string } }) {
             discount={sh?.pref?.Shopkeeper.discount}
             website={sh?.pref?.Shopkeeper.website}
             whatsapp={sh?.pref?.Shopkeeper.whatsapp}
+            distance={sh.pref.distance.toFixed(0)}
             hot={true}
           />
         )}
@@ -294,6 +295,7 @@ export default function Medicine({ params }: { params: { id: string } }) {
               discount={shop.discount}
               website={shop.website}
               whatsapp={shop.whatsapp}
+              distance={shop.distance.toFixed(0)}
               hot={false}
             />
           ))}
