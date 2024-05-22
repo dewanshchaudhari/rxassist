@@ -232,6 +232,10 @@ export default function Home() {
           discount={sh?.pref?.Shopkeeper.discount}
           website={sh?.pref?.Shopkeeper.website}
           whatsapp={sh?.pref?.Shopkeeper.whatsapp}
+          lat={sh.pref.Shopkeeper.lat}
+          lon={sh.pref.Shopkeeper.lat}
+          l1={location.lat ?? ""}
+          l2={location.lon ?? ""}
           hot={true}
         />
       )}
@@ -244,6 +248,10 @@ export default function Home() {
             discount={shop.discount}
             website={shop.website}
             whatsapp={shop.whatsapp}
+            lat={shop.lat}
+            lon={shop.lon}
+            l1={location.lat ?? ""}
+            l2={location.lon ?? ""}
             hot={false}
           />
         ))}
