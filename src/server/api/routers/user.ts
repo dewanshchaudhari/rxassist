@@ -96,7 +96,6 @@ export const userRouter = createTRPCRouter({
         latitude: string;
         longitude: string;
       };
-      console.log(latitude, longitude);
       const url = `https://geocode.maps.co/reverse?lat=${latitude}&lon=${longitude}&api_key=${env.GEOCODE_API_KEY}`;
       const response = await axios.get(url);
       if (response.status !== 200)
@@ -125,9 +124,8 @@ export const userRouter = createTRPCRouter({
           country_code: string;
         };
       };
-      console.log(body);
       return {
-        pincode: body.address.postcode,
+        pincode: input.pincode,
         city: body.address.city ?? body.address.county,
         state: body.address.state,
         lat: latitude.toString(),
