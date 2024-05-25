@@ -1,7 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import type { NextApiRequest, NextApiResponse } from "next";
 import { db } from "@/server/db";
+type RequestBody = {
+  status: string;
+  requestId: string;
+  accessToken?: string;
+  endpoint?: string;
+};
 type ResponseData = {
   message: string;
 };
@@ -11,22 +15,23 @@ export default async function handler(
   res: NextApiResponse<ResponseData>,
 ) {
   console.log(req.body, req.method);
-  if (req.body.status === "flow_invoked") {
+  const body = req.body as RequestBody;
+  if (body.status === "flow_invoked") {
     await db.truecallerAuth.create({
       data: {
-        requestId: req.body.requestId,
-        status: req.body.status,
+        requestId: body.requestId,
+        status: body.status,
       },
     });
   }
-  if (req.body.accessToken) {
+  if (body.accessToken) {
     await db.truecallerAuth.update({
       where: {
-        requestId: req.body.requestId,
+        requestId: body.requestId,
       },
       data: {
-        accessToken: req.body.accessToken,
-        endpoint: req.body.endpoint,
+        accessToken: body.accessToken,
+        endpoint: body.endpoint,
       },
     });
   }
