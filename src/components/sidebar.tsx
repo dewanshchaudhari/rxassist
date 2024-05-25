@@ -21,6 +21,7 @@ import {
   FileTerminal,
   Menu,
   Phone,
+  Rss,
 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -84,16 +85,9 @@ export function Sidebar() {
             asChild
           >
             <Link href="/home#works">
-              <CircleDollarSign /> How {env.NEXT_PUBLIC_APP_NAME} works
+              <Rss /> Blogs
             </Link>
           </Button>
-
-          {/* <Button
-            variant="ghost"
-            className="flex w-full flex-row items-center justify-start gap-2 rounded-full"
-          >
-            <BriefcaseMedical /> Drug savings
-          </Button> */}
         </div>
         <Separator orientation="horizontal" className="my-4" />
         <div className="flex w-full flex-col items-center justify-between gap-2">

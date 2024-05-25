@@ -81,6 +81,7 @@ export const authOptions: NextAuthOptions = {
                   "Cache-Control": "no-cache",
                 },
               });
+              console.log(response);
               const { data } = response as {
                 data: {
                   id: string;

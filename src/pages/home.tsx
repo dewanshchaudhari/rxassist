@@ -232,6 +232,7 @@ export default function Home() {
           discount={sh?.pref?.Shopkeeper.discount}
           website={sh?.pref?.Shopkeeper.website}
           whatsapp={sh?.pref?.Shopkeeper.whatsapp}
+          phone={sh?.pref.Shopkeeper.phone}
           distance={sh.pref.distance.toFixed(0)}
           hot={true}
         />
@@ -245,6 +246,7 @@ export default function Home() {
             discount={shop.discount}
             website={shop.website}
             whatsapp={shop.whatsapp}
+            phone={shop.phone}
             distance={shop.distance.toFixed(0)}
             hot={false}
           />

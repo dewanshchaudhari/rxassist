@@ -47,6 +47,7 @@ export const states: Record<string, string> = {
   Assam: "AS",
   Bihar: "BR",
   Chhattisgarh: "CG",
+  Delhi: "DL",
   Goa: "GA",
   Gujarat: "GJ",
   Haryana: "HR",

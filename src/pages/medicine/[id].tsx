@@ -12,6 +12,7 @@ import { cn, getRandomNumber } from "@/lib/utils";
 import { api } from "@/utils/api";
 import { Loader2, Lock, Orbit } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useLocalStorage } from "usehooks-ts";
 export default function Medicine({ params }: { params: { id: string } }) {
@@ -260,10 +261,17 @@ export default function Medicine({ params }: { params: { id: string } }) {
         </div>
       </div>
       <div className="flex w-full flex-col items-center justify-center gap-4 p-10">
-        <Button className="w-full" variant="outline">
-          Get free Pharmacist consultation
+        <Button className="w-full" variant="outline" asChild>
+          <Link href={"/upload"}>Get free Pharmacist consultation</Link>
         </Button>
-        <Button className="w-full">Call to order</Button>
+
+        <Button className="w-full" asChild>
+          <Link
+            href={`tel:${sh?.pref?.Shopkeeper?.phone ? sh?.pref.Shopkeeper.phone : sh?.shops[0]?.phone}`}
+          >
+            Call to order
+          </Link>
+        </Button>
       </div>
       <div>
         <h1 className="mt-4 w-full text-center text-2xl font-medium">
@@ -282,6 +290,7 @@ export default function Medicine({ params }: { params: { id: string } }) {
             discount={sh?.pref?.Shopkeeper.discount}
             website={sh?.pref?.Shopkeeper.website}
             whatsapp={sh?.pref?.Shopkeeper.whatsapp}
+            phone={sh?.pref.Shopkeeper.phone}
             distance={sh.pref.distance.toFixed(0)}
             hot={true}
           />
@@ -295,6 +304,7 @@ export default function Medicine({ params }: { params: { id: string } }) {
               discount={shop.discount}
               website={shop.website}
               whatsapp={shop.whatsapp}
+              phone={shop.phone}
               distance={shop.distance.toFixed(0)}
               hot={false}
             />

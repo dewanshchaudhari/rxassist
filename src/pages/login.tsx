@@ -1,4 +1,4 @@
-import PhoneAuthDialog from "@/components/PhoneAuthDialog";
+import { PhoneAuthDrawer } from "@/components/PhoneAuthDrawer";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -21,7 +21,7 @@ export default function Login() {
           </span>
           <div className="flex-grow border-t border-primary"></div>
         </div>
-        {status === "unauthenticated" && <PhoneAuthDialog open={true} />}
+        {status === "unauthenticated" && <PhoneAuthDrawer open={true} />}
         <p className="pt-4 text-center text-primary">
           By continuing, you agree to our{" "}
           <Link href="/privacy-policy" className="underline underline-offset-2">

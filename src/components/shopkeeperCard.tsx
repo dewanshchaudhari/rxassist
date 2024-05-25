@@ -6,6 +6,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { Phone } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -15,6 +16,7 @@ export default function ShopkeeperCard({
   website,
   whatsapp,
   discount,
+  phone,
   distance,
   hot,
 }: {
@@ -24,6 +26,7 @@ export default function ShopkeeperCard({
   whatsapp: string | null;
   discount: string | null;
   distance: string | null;
+  phone: string | null;
   hot?: boolean;
 }) {
   return (
@@ -65,6 +68,15 @@ export default function ShopkeeperCard({
                     height={30}
                     width={30}
                   />
+                </Button>
+              </Link>
+              <Link href={`tel:${phone}` ?? "#"} target="_blank">
+                <Button
+                  variant={"secondary"}
+                  className="rounded-full"
+                  size={"icon"}
+                >
+                  <Phone />
                 </Button>
               </Link>
             </div>
