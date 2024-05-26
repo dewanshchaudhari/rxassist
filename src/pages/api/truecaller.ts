@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { db } from "@/server/db";
 type RequestBody = {
-  status: string;
+  status?: string;
   requestId: string;
   accessToken?: string;
   endpoint?: string;
@@ -20,7 +20,7 @@ export default async function handler(
     await db.truecallerAuth.create({
       data: {
         requestId: body.requestId,
-        status: body.status,
+        status: body.status ?? "",
       },
     });
   }
