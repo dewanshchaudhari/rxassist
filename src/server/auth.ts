@@ -67,8 +67,48 @@ export const authOptions: NextAuthOptions = {
       },
       authorize: async (credentials) => {
         try {
+          console.log(credentials);
           if (!credentials) return null;
-          if (!credentials.otp) {
+          if (credentials.phone) {
+            const otp = await db.otpAuth.findUnique({
+              where: {
+                phone: credentials.phone,
+              },
+            });
+            if (!otp?.otp) return null;
+
+            if (otp.otp !== credentials.otp) throw new Error("Wrong OTP");
+            const { id, name, phone, pincode } = await db.user.upsert({
+              where: {
+                phone: credentials.phone,
+              },
+              create: {
+                name: "User",
+                phone: credentials.phone,
+                isDeleted: false,
+              },
+              update: {
+                isDeleted: false,
+              },
+            });
+            console.log(id, name, phone);
+            return {
+              id,
+              accessToken: jwt.sign(
+                {
+                  id: id,
+                },
+                env.NEXTAUTH_SECRET!,
+                {
+                  expiresIn: 86400 * 30,
+                },
+              ),
+              phone: phone,
+              name: name,
+              pincode,
+            };
+          }
+          if (credentials.requestId !== "") {
             try {
               const truecallerAuth = await db.truecallerAuth.findFirst({
                 where: {
@@ -81,7 +121,7 @@ export const authOptions: NextAuthOptions = {
                   "Cache-Control": "no-cache",
                 },
               });
-              console.log(response);
+              console.log(response.data);
               const { data } = response as {
                 data: {
                   id: string;
@@ -142,43 +182,8 @@ export const authOptions: NextAuthOptions = {
               throw new Error("Error check logs");
             }
           }
-          const otp = await db.otpAuth.findUnique({
-            where: {
-              phone: credentials.phone,
-            },
-          });
-          if (!otp?.otp) return null;
 
-          if (otp.otp !== credentials.otp) throw new Error("Wrong OTP");
-          const { id, name, phone, pincode } = await db.user.upsert({
-            where: {
-              phone: credentials.phone,
-            },
-            create: {
-              name: "User",
-              phone: credentials.phone,
-              isDeleted: false,
-            },
-            update: {
-              isDeleted: false,
-            },
-          });
-          console.log(id, name, phone);
-          return {
-            id,
-            accessToken: jwt.sign(
-              {
-                id: id,
-              },
-              env.NEXTAUTH_SECRET!,
-              {
-                expiresIn: 86400 * 30,
-              },
-            ),
-            phone: phone,
-            name: name,
-            pincode,
-          };
+          throw new Error("Server Error");
         } catch (error) {
           throw new Error("Wrong OTP");
         }

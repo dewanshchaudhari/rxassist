@@ -44,9 +44,6 @@ export function PhoneAuthDrawer({ open }: { open: boolean }) {
     },
   );
   const { mutate: setKey } = api.user.setTrueCallerRequestId.useMutation();
-  React.useEffect(() => {
-    setKey({ requestId });
-  }, []);
   console.log(data, requestId);
   React.useEffect(() => {
     void (async () => {
@@ -118,6 +115,7 @@ export function PhoneAuthDrawer({ open }: { open: boolean }) {
                     className="w-full"
                     onClick={() => {
                       if (!clicked) {
+                        setKey({ requestId });
                         window.location.assign(TRUECALLER_URL);
                         setClicked(true);
                       }
