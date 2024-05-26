@@ -43,7 +43,10 @@ export function PhoneAuthDrawer({ open }: { open: boolean }) {
       refetchInterval: 2000,
     },
   );
-
+  const { mutate: setKey } = api.user.setTrueCallerRequestId.useMutation();
+  React.useEffect(() => {
+    setKey({ requestId });
+  }, []);
   console.log(data, requestId);
   React.useEffect(() => {
     void (async () => {
