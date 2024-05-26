@@ -32,6 +32,25 @@ export const userRouter = createTRPCRouter({
       const truecallerAuth = await ctx.db.truecallerAuth.findFirst({
         where: {
           requestId: input.requestId,
+          accessToken: {
+            not: null,
+          },
+        },
+      });
+      if (truecallerAuth?.accessToken) return true;
+      else return false;
+    }),
+  setTrueCallerRequestId: publicProcedure
+    .input(z.object({ requestId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const truecallerAuth = await ctx.db.truecallerAuth.upsert({
+        where: {
+          requestId: input.requestId,
+        },
+        update: {},
+        create: {
+          requestId: input.requestId,
+          status: "",
         },
       });
       if (truecallerAuth?.accessToken) return true;
