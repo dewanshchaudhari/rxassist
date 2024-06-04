@@ -20,8 +20,11 @@ import { useLocalStorage } from "usehooks-ts";
 import { Search } from "@/components/search";
 import ShopkeeperCard from "@/components/shopkeeperCard";
 import { env } from "@/env";
+import useMediaQuery from "@/hooks/mediaQuery";
 
 export default function Home() {
+  const isMobile = useMediaQuery("(max-width: 640px)");
+
   const [isOpen, setIsOpen] = React.useState(false);
   const [zipcode, setZipcode] = React.useState("");
 
@@ -124,12 +127,16 @@ export default function Home() {
   }
   return (
     <div>
-      <div className="flex w-full max-w-full flex-col justify-start bg-[#FFE574] bg-[url('https://images.ctfassets.net/4f3rgqwzdznj/664tECUWQfMzWmIbDht1Ky/6419be7ffddd0f1470e4fe460ae3e820/kcheli-rising-sun-compromise.svg')] bg-bottom bg-no-repeat px-4 pb-4 pt-12">
+      <div
+        className={`flex w-full max-w-full flex-col justify-start ${isMobile ? "bg-[#FFE574] bg-[url('https://images.ctfassets.net/4f3rgqwzdznj/664tECUWQfMzWmIbDht1Ky/6419be7ffddd0f1470e4fe460ae3e820/kcheli-rising-sun-compromise.svg')] bg-bottom bg-no-repeat px-4 pb-4 pt-12" : "bg-[url('/wave.svg')] bg-cover bg-bottom px-16 pb-8 pt-16"}`}
+      >
         <h1 className="w-full text-3xl font-medium md:text-center">
           Stop paying too much for prescriptions
         </h1>
-        <h3 className="text-left">Compare prices and save up to 80%</h3>
-        <div className="mt-4">
+        <h3 className={isMobile ? "text-left" : "text-center"}>
+          Compare prices and save up to 80%
+        </h3>
+        <div className={`mt-4 ${!isMobile ? "mx-auto w-[80%]" : ""}`}>
           <Search />
         </div>
       </div>
@@ -144,7 +151,7 @@ export default function Home() {
             : ""}
           <Drawer open={isOpen} onOpenChange={setIsOpen}>
             <DrawerTrigger>
-              <Label className="text-blue-700">(Upload)</Label>
+              <Label className="text-blue-700">(Update)</Label>
             </DrawerTrigger>
             <DrawerContent>
               <DrawerHeader>
@@ -207,7 +214,7 @@ export default function Home() {
       {sh?.shops?.length === 0 && (
         <div className="flex flex-col items-center justify-between">
           <Image src={"/search.svg"} alt="" height={350} width={280} />
-          <h3 className="w-full text-center text-xl font-normal">
+          <h3 className="mb-4 w-full text-center text-xl font-normal">
             Sorry, we could not find savings for you in this location.
           </h3>
           <Button
@@ -225,31 +232,35 @@ export default function Home() {
         </div>
       )}
       {sh?.pref?.Shopkeeper && (
-        <ShopkeeperCard
-          key={sh?.pref?.Shopkeeper.id}
-          address={sh?.pref?.Shopkeeper.address}
-          shopName={sh?.pref?.Shopkeeper.shopName}
-          discount={sh?.pref?.Shopkeeper.discount}
-          website={sh?.pref?.Shopkeeper.website}
-          whatsapp={sh?.pref?.Shopkeeper.whatsapp}
-          phone={sh?.pref.Shopkeeper.phone}
-          distance={sh.pref.distance.toFixed(0)}
-          hot={true}
-        />
+        <div className={!isMobile ? "mx-auto w-[70%]" : ""}>
+          <ShopkeeperCard
+            key={sh?.pref?.Shopkeeper.id}
+            address={sh?.pref?.Shopkeeper.address}
+            shopName={sh?.pref?.Shopkeeper.shopName}
+            discount={sh?.pref?.Shopkeeper.discount}
+            website={sh?.pref?.Shopkeeper.website}
+            whatsapp={sh?.pref?.Shopkeeper.whatsapp}
+            phone={sh?.pref.Shopkeeper.phone}
+            distance={sh.pref.distance.toFixed(0)}
+            hot={true}
+          />
+        </div>
       )}
       {sh?.shops?.length !== 0 &&
         sh?.shops?.map((shop) => (
-          <ShopkeeperCard
-            key={shop.id}
-            address={shop.address}
-            shopName={shop.shopName}
-            discount={shop.discount}
-            website={shop.website}
-            whatsapp={shop.whatsapp}
-            phone={shop.phone}
-            distance={shop.distance.toFixed(0)}
-            hot={false}
-          />
+          <div className={!isMobile ? "mx-auto w-[70%]" : ""} key={shop.id}>
+            <ShopkeeperCard
+              key={shop.id}
+              address={shop.address}
+              shopName={shop.shopName}
+              discount={shop.discount}
+              website={shop.website}
+              whatsapp={shop.whatsapp}
+              phone={shop.phone}
+              distance={shop.distance.toFixed(0)}
+              hot={false}
+            />
+          </div>
         ))}
       <div
         className="mb-10 flex h-full w-full flex-col items-center justify-between p-10"
@@ -258,32 +269,30 @@ export default function Home() {
         <h1 className="mt-2 text-center text-2xl font-bold">
           How {env.NEXT_PUBLIC_APP_NAME} Works
         </h1>
-        <Image src={"/compare.webp"} alt="" height={1000} width={1000} />
-        <h2 className="mt-2 text-center text-lg font-bold">Compare prices</h2>
-        <h3 className="mt-2 text-center">
-          Drug prices vary by pharmacy. Use {env.NEXT_PUBLIC_APP_NAME} to find
-          current prices and discounts.
-        </h3>
-
-        <h1 className="mt-2 text-center text-xl">Get free coupons</h1>
-        <Image src={"/compare1.svg"} alt="" height={1000} width={1000} />
-        <h2 className="mt-2 text-center text-lg font-bold">Get free coupons</h2>
-        <h3 className="mt-2 text-center">
-          {env.NEXT_PUBLIC_APP_NAME} coupons can help you pay less than the cash
-          price for your prescription.
-        </h3>
-
-        <h1 className="mt-2 text-center text-xl">
-          How {env.NEXT_PUBLIC_APP_NAME} Works
-        </h1>
-        <Image src={"/compare2.webp"} alt="" height={1000} width={1000} />
-        <h2 className="mt-2 text-center text-lg font-bold">
-          Show to your pharmacist
-        </h2>
-        <h3 className="mt-2 text-center">
-          It&#39;s easy. Just bring your free coupon to the pharmacy when
-          picking up your prescription.
-        </h3>
+        <div className="flex flex-col justify-center">
+          <Image src={"/compare.webp"} alt="" height={1000} width={1000} />
+          <h2 className="mt-2 text-center text-lg font-bold">Compare prices</h2>
+          <h3 className="mt-2 text-center">
+            Drug prices vary by pharmacy. Use {env.NEXT_PUBLIC_APP_NAME} to find
+            current prices and discounts.
+          </h3>
+          <Image src={"/compare1.svg"} alt="" height={1000} width={1000} />
+          <h2 className="mt-2 text-center text-lg font-bold">
+            Get free coupons
+          </h2>
+          <h3 className="mt-2 text-center">
+            {env.NEXT_PUBLIC_APP_NAME} coupons can help you pay less than the
+            cash price for your prescription.
+          </h3>
+          <Image src={"/compare2.webp"} alt="" height={1000} width={1000} />
+          <h2 className="mt-2 text-center text-lg font-bold">
+            Show to your pharmacist
+          </h2>
+          <h3 className="mt-2 text-center">
+            It&#39;s easy. Just bring your free coupon to the pharmacy when
+            picking up your prescription.
+          </h3>
+        </div>
       </div>
     </div>
   );

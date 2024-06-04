@@ -17,13 +17,13 @@ const Layout = ({ children }: PropsWithChildren) => {
     return (
       <>
         <div className="flex h-screen w-screen flex-row items-center justify-between">
-          <div className="h-full w-1/4 overflow-auto">
+          <div className="h-full w-full overflow-auto">
             <Nav className="sticky top-0 z-50 bg-white px-4" />
             <div className="overflow-auto">{children}</div>
           </div>
-          <div className="h-full w-3/4">
+          {/* <div className="h-full w-3/4">
             <div className="h-full w-full bg-[url('/bg.jpg')] bg-cover"></div>
-          </div>
+          </div> */}
         </div>
       </>
     );

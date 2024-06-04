@@ -1,9 +1,12 @@
 import { PhoneAuthDrawer } from "@/components/PhoneAuthDrawer";
+import useMediaQuery from "@/hooks/mediaQuery";
 import { UploadDropzone } from "@/utils/uploadthing";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React from "react";
 export default function Upload() {
+  const isMobile = useMediaQuery("(max-width: 640px)");
+
   const router = useRouter();
   const [show, setShow] = React.useState(false);
   const { status } = useSession();
@@ -11,7 +14,9 @@ export default function Upload() {
     if (status === "unauthenticated") setShow(true);
   }, [status]);
   return (
-    <main className="mt-10 flex min-h-screen flex-col items-center justify-start p-4">
+    <main
+      className={`mt-10 flex min-h-screen flex-col items-center justify-start p-4 ${!isMobile ? "mx-auto w-[70%]" : ""}`}
+    >
       <h1 className="mb-4 text-2xl font-semibold">Upload Your Prescription</h1>
       {show ? (
         <PhoneAuthDrawer open={show} />
