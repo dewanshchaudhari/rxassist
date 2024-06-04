@@ -2,8 +2,11 @@ import { Button } from "@/components/ui/button";
 import { api } from "@/utils/api";
 import { Loader2 } from "lucide-react";
 import MedicineDisplayCard from "./MedicineDisplayCard";
+import useMediaQuery from "@/hooks/mediaQuery";
 
 export default function MedicineSearchList({ start }: { start: string }) {
+  const isMobile = useMediaQuery("(max-width: 640px)");
+
   const { data, isLoading, fetchNextPage, hasNextPage } =
     api.medicine.searchMedicineByName.useInfiniteQuery(
       {
@@ -24,7 +27,9 @@ export default function MedicineSearchList({ start }: { start: string }) {
       ) : data === undefined || data.pages[0]?.items.length === 0 ? (
         <div className="w-full text-center text-xl">No Medicine found</div>
       ) : (
-        <div className="grid w-full grid-cols-2 gap-2 p-2">
+        <div
+          className={`grid w-full gap-2 p-2 ${isMobile ? "grid-cols-2" : "grid-cols-4"}`}
+        >
           {data.pages.map((da) =>
             da.items.map((d) => (
               <MedicineDisplayCard

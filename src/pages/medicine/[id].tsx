@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { env } from "@/env";
+import useMediaQuery from "@/hooks/mediaQuery";
 import { cn, getRandomNumber } from "@/lib/utils";
 import { api } from "@/utils/api";
 import { Loader2, Lock, Orbit } from "lucide-react";
@@ -16,6 +17,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useLocalStorage } from "usehooks-ts";
 export default function Medicine({ params }: { params: { id: string } }) {
+  const isMobile = useMediaQuery("(max-width: 640px)");
+
   const [location, setLocation] = useLocalStorage<{
     pincode: string | null;
     city: string | null;
@@ -74,33 +77,33 @@ export default function Medicine({ params }: { params: { id: string } }) {
     );
 
   return (
-    <div className="h-full w-full">
+    <div className={`h-full ${isMobile ? "w-full" : "mx-auto w-[70%]"}`}>
       {env.NEXT_PUBLIC_APP_ID === "2" &&
         medicine.AlternativeMedicine.length !== 0 && (
-          <span className="flex flex-row p-4 text-muted-foreground">
+          <div className="w-full p-4 text-center text-muted-foreground">
             We recommend the below JanAushadhi substitute for your searched
             medicine.
-          </span>
+          </div>
         )}
       {env.NEXT_PUBLIC_APP_ID === "2" &&
         medicine.AlternativeMedicine.length === 0 && (
-          <span className="flex flex-row p-4 text-muted-foreground">
+          <div className="w-full p-4 text-center text-muted-foreground">
             We don&#39;t have substitute for {medicine?.name}
-          </span>
+          </div>
         )}
       {env.NEXT_PUBLIC_APP_ID === "1" &&
         medicine.AlternativeMedicine.length !== 0 && (
-          <span className="flex flex-row p-4 text-muted-foreground">
+          <div className="w-full p-4 text-center text-muted-foreground">
             We recommend{" "}
             {medicine?.AlternativeMedicine[0]?.alternateMedicine.name} instead
             of {medicine?.name}
-          </span>
+          </div>
         )}
       {env.NEXT_PUBLIC_APP_ID === "1" &&
         medicine.AlternativeMedicine.length === 0 && (
-          <span className="flex flex-row p-4 text-muted-foreground">
+          <div className="w-full p-4 text-center text-muted-foreground">
             We don&#39;t have substitute for {medicine?.name}
-          </span>
+          </div>
         )}
       <div className="raidal relative z-10 mt-2 flex flex-col items-center justify-center">
         {medicine.AlternativeMedicine.length !== 0 ? (
@@ -115,7 +118,7 @@ export default function Medicine({ params }: { params: { id: string } }) {
           </Button>
         )}
         {/* <Separator className="absolute left-0 top-5 z-0" /> */}
-        <h3 className="text-muted-foreground">{medicine.Salt?.salt}</h3>
+        <h3 className="mt-2 text-muted-foreground">{medicine.Salt?.salt}</h3>
       </div>
       <div className="relative m-2 flex flex-row items-start justify-between gap-2">
         <div className="w-full py-1">
