@@ -21,6 +21,15 @@ import { Search } from "@/components/search";
 import ShopkeeperCard from "@/components/shopkeeperCard";
 import { env } from "@/env";
 import useMediaQuery from "@/hooks/mediaQuery";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export default function Home() {
   const isMobile = useMediaQuery("(max-width: 640px)");
@@ -149,65 +158,133 @@ export default function Home() {
           {location.pincode
             ? `${location.pincode} ${location.city} ${states[location.state!]}`
             : ""}
-          <Drawer open={isOpen} onOpenChange={setIsOpen}>
-            <DrawerTrigger>
-              <Label className="text-blue-700">(Update)</Label>
-            </DrawerTrigger>
-            <DrawerContent>
-              <DrawerHeader>
-                <DrawerTitle className="text-2xl">
-                  Set Your Location
-                </DrawerTitle>
-                <DrawerDescription>Find a location near you</DrawerDescription>
-              </DrawerHeader>
-              <div className="p-4">
-                <Button
-                  className="h-12 w-full gap-4 rounded-full"
-                  onClick={() => handleLocationClick()}
-                >
-                  {loading ? (
-                    <Loader2 className="animate-spin" />
-                  ) : (
-                    <LocateFixed />
-                  )}
-                  Use my current location
-                </Button>
-                <h2 className="mb-2 mt-4 text-center text-sm text-muted-foreground">
-                  Note: Your browser will ask permission first
-                </h2>
-                <h1 className="text-center text-muted-foreground">OR</h1>
-                <div className="grid w-full max-w-sm items-center gap-1.5 p-4">
-                  <Label htmlFor="zipcode">Zipcode</Label>
-                  <Input
-                    type="text"
-                    id="zipcode"
-                    placeholder="Enter zipcode"
-                    value={zipcode}
-                    onChange={(e) => setZipcode(e.target.value)}
-                  />
-                </div>
-              </div>
-              <DrawerFooter>
-                <div className="flex w-full flex-row items-center justify-between gap-4">
-                  <DrawerClose className="w-1/2">
-                    <Button variant="outline" className="w-full rounded-full">
-                      Cancel
-                    </Button>
-                  </DrawerClose>
+          {isMobile ? (
+            <Drawer open={isOpen} onOpenChange={setIsOpen}>
+              <DrawerTrigger>
+                <Label className="text-blue-700">(Update)</Label>
+              </DrawerTrigger>
+              <DrawerContent>
+                <DrawerHeader>
+                  <DrawerTitle className="text-2xl">
+                    Set Your Location
+                  </DrawerTitle>
+                  <DrawerDescription>
+                    Find a location near you
+                  </DrawerDescription>
+                </DrawerHeader>
+                <div className="p-4">
                   <Button
-                    className="w-1/2 rounded-full"
-                    disabled={isLoadingZip}
-                    onClick={() => {
-                      if (zipcode.length === 6) zip({ pincode: zipcode });
-                    }}
+                    className="h-12 w-full gap-4 rounded-full"
+                    onClick={() => handleLocationClick()}
                   >
-                    {isLoadingZip && <Loader2 className="mr-4 animate-spin" />}
-                    Submit
+                    {loading ? (
+                      <Loader2 className="animate-spin" />
+                    ) : (
+                      <LocateFixed />
+                    )}
+                    Use my current location
                   </Button>
+                  <h2 className="mb-2 mt-4 text-center text-sm text-muted-foreground">
+                    Note: Your browser will ask permission first
+                  </h2>
+                  <h1 className="text-center text-muted-foreground">OR</h1>
+                  <div className="grid w-full max-w-sm items-center gap-1.5 p-4">
+                    <Label htmlFor="zipcode">Zipcode</Label>
+                    <Input
+                      type="text"
+                      id="zipcode"
+                      placeholder="Enter zipcode"
+                      value={zipcode}
+                      onChange={(e) => setZipcode(e.target.value)}
+                    />
+                  </div>
                 </div>
-              </DrawerFooter>
-            </DrawerContent>
-          </Drawer>
+                <DrawerFooter>
+                  <div className="flex w-full flex-row items-center justify-between gap-4">
+                    <DrawerClose className="w-1/2">
+                      <Button variant="outline" className="w-full rounded-full">
+                        Cancel
+                      </Button>
+                    </DrawerClose>
+                    <Button
+                      className="w-1/2 rounded-full"
+                      disabled={isLoadingZip}
+                      onClick={() => {
+                        if (zipcode.length === 6) zip({ pincode: zipcode });
+                      }}
+                    >
+                      {isLoadingZip && (
+                        <Loader2 className="mr-4 animate-spin" />
+                      )}
+                      Submit
+                    </Button>
+                  </div>
+                </DrawerFooter>
+              </DrawerContent>
+            </Drawer>
+          ) : (
+            <Dialog open={isOpen} onOpenChange={setIsOpen}>
+              <DialogTrigger asChild>
+                <Label className="text-blue-700">(Update)</Label>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle>Set Your Location</DialogTitle>
+                  <DialogDescription>
+                    Find a location near you
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="p-4">
+                  <Button
+                    className="h-12 w-full gap-4 rounded-full"
+                    onClick={() => handleLocationClick()}
+                  >
+                    {loading ? (
+                      <Loader2 className="animate-spin" />
+                    ) : (
+                      <LocateFixed />
+                    )}
+                    Use my current location
+                  </Button>
+                  <h2 className="mb-2 mt-4 text-center text-sm text-muted-foreground">
+                    Note: Your browser will ask permission first
+                  </h2>
+                  <h1 className="text-center text-muted-foreground">OR</h1>
+                  <div className="grid w-full max-w-sm items-center gap-1.5 p-4">
+                    <Label htmlFor="zipcode">Zipcode</Label>
+                    <Input
+                      type="text"
+                      id="zipcode"
+                      placeholder="Enter zipcode"
+                      value={zipcode}
+                      onChange={(e) => setZipcode(e.target.value)}
+                    />
+                  </div>
+                </div>
+                <DialogFooter>
+                  <div className="flex w-full flex-row items-center justify-between gap-4">
+                    <DrawerClose className="w-1/2">
+                      <Button variant="outline" className="w-full rounded-full">
+                        Cancel
+                      </Button>
+                    </DrawerClose>
+                    <Button
+                      className="w-1/2 rounded-full"
+                      disabled={isLoadingZip}
+                      onClick={() => {
+                        if (zipcode.length === 6) zip({ pincode: zipcode });
+                      }}
+                    >
+                      {isLoadingZip && (
+                        <Loader2 className="mr-4 animate-spin" />
+                      )}
+                      Submit
+                    </Button>
+                  </div>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+          )}
         </div>
       </div>
 
