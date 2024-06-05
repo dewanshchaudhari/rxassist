@@ -8,7 +8,7 @@ export default function Search() {
 
   const [search, setSearch] = React.useState<string>("");
   return (
-    <div className={!isMobile ? "mx-auto w-[70%]" : ""}>
+    <div className={!isMobile ? "mx-auto w-[60%]" : ""}>
       <div className="p-4">
         <InputWithIcon
           placeholder="What are you looking for?"

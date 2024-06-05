@@ -309,7 +309,7 @@ export default function Home() {
         </div>
       )}
       {sh?.pref?.Shopkeeper && (
-        <div className={!isMobile ? "mx-auto w-[70%]" : ""}>
+        <div className={!isMobile ? "mx-auto w-[50%]" : ""}>
           <ShopkeeperCard
             key={sh?.pref?.Shopkeeper.id}
             address={sh?.pref?.Shopkeeper.address}
@@ -325,7 +325,7 @@ export default function Home() {
       )}
       {sh?.shops?.length !== 0 &&
         sh?.shops?.map((shop) => (
-          <div className={!isMobile ? "mx-auto w-[70%]" : ""} key={shop.id}>
+          <div className={!isMobile ? "mx-auto w-[50%]" : ""} key={shop.id}>
             <ShopkeeperCard
               key={shop.id}
               address={shop.address}

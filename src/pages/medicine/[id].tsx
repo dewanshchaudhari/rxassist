@@ -77,7 +77,7 @@ export default function Medicine({ params }: { params: { id: string } }) {
     );
 
   return (
-    <div className={`h-full ${isMobile ? "w-full" : "mx-auto w-[70%]"}`}>
+    <div className={`h-full ${isMobile ? "w-full" : "mx-auto w-[60%]"}`}>
       {env.NEXT_PUBLIC_APP_ID === "2" &&
         medicine.AlternativeMedicine.length !== 0 && (
           <div className="w-full p-4 text-center text-muted-foreground">
@@ -120,8 +120,8 @@ export default function Medicine({ params }: { params: { id: string } }) {
         {/* <Separator className="absolute left-0 top-5 z-0" /> */}
         <h3 className="mt-2 text-muted-foreground">{medicine.Salt?.salt}</h3>
       </div>
-      <div className="relative m-2 flex flex-row items-start justify-between gap-2">
-        <div className="w-full py-1">
+      <div className="relative m-2 flex flex-row justify-center gap-2">
+        <div className={`w-full py-1 ${!isMobile ? "max-w-[400px]" : ""}`}>
           <div
             className={cn(
               "w-full rounded-lg bg-gray-200 py-1",
@@ -163,7 +163,7 @@ export default function Medicine({ params }: { params: { id: string } }) {
             </Card>
           )}
         </div>
-        <div className="w-full  py-1">
+        <div className={`w-full py-1 ${!isMobile ? "max-w-[400px]" : ""}`}>
           {medicine.AlternativeMedicine.length !== 0 && (
             <div className="flex h-8 flex-row items-center justify-center rounded-t-lg bg-green-600 p-2 text-center text-sm text-white">
               {(
@@ -263,7 +263,9 @@ export default function Medicine({ params }: { params: { id: string } }) {
           )}
         </div>
       </div>
-      <div className="flex w-full flex-col items-center justify-center gap-4 p-10">
+      <div
+        className={`flex w-full items-center justify-center gap-4 p-10 ${isMobile ? "flex-col" : "flex-row"}`}
+      >
         <Button className="w-full" variant="outline" asChild>
           <Link href={"/upload"}>Get free Pharmacist consultation</Link>
         </Button>
@@ -286,31 +288,35 @@ export default function Medicine({ params }: { params: { id: string } }) {
           </div>
         )}
         {sh?.pref?.Shopkeeper && (
-          <ShopkeeperCard
-            key={sh?.pref?.Shopkeeper.id}
-            address={sh?.pref?.Shopkeeper.address}
-            shopName={sh?.pref?.Shopkeeper.shopName}
-            discount={sh?.pref?.Shopkeeper.discount}
-            website={sh?.pref?.Shopkeeper.website}
-            whatsapp={sh?.pref?.Shopkeeper.whatsapp}
-            phone={sh?.pref.Shopkeeper.phone}
-            distance={sh.pref.distance.toFixed(0)}
-            hot={true}
-          />
+          <div className={!isMobile ? "mx-auto w-[80%]" : ""}>
+            <ShopkeeperCard
+              key={sh?.pref?.Shopkeeper.id}
+              address={sh?.pref?.Shopkeeper.address}
+              shopName={sh?.pref?.Shopkeeper.shopName}
+              discount={sh?.pref?.Shopkeeper.discount}
+              website={sh?.pref?.Shopkeeper.website}
+              whatsapp={sh?.pref?.Shopkeeper.whatsapp}
+              phone={sh?.pref.Shopkeeper.phone}
+              distance={sh.pref.distance.toFixed(0)}
+              hot={true}
+            />
+          </div>
         )}
         {sh?.shops?.length !== 0 &&
           sh?.shops?.map((shop) => (
-            <ShopkeeperCard
-              key={shop.id}
-              address={shop.address}
-              shopName={shop.shopName}
-              discount={shop.discount}
-              website={shop.website}
-              whatsapp={shop.whatsapp}
-              phone={shop.phone}
-              distance={shop.distance.toFixed(0)}
-              hot={false}
-            />
+            <div className={!isMobile ? "mx-auto w-[80%]" : ""} key={shop.id}>
+              <ShopkeeperCard
+                key={shop.id}
+                address={shop.address}
+                shopName={shop.shopName}
+                discount={shop.discount}
+                website={shop.website}
+                whatsapp={shop.whatsapp}
+                phone={shop.phone}
+                distance={shop.distance.toFixed(0)}
+                hot={false}
+              />
+            </div>
           ))}
       </div>
     </div>

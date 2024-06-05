@@ -15,7 +15,7 @@ export default function Upload() {
   }, [status]);
   return (
     <main
-      className={`mt-10 flex min-h-screen flex-col items-center justify-start p-4 ${!isMobile ? "mx-auto w-[70%]" : ""}`}
+      className={`mt-10 flex min-h-screen flex-col items-center justify-start p-4 ${!isMobile ? "mx-auto w-[60%]" : ""}`}
     >
       <h1 className="mb-4 text-2xl font-semibold">Upload Your Prescription</h1>
       {show ? (
