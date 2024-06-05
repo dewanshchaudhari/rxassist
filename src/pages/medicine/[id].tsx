@@ -266,11 +266,11 @@ export default function Medicine({ params }: { params: { id: string } }) {
       <div
         className={`flex w-full items-center justify-center gap-4 p-10 ${isMobile ? "flex-col" : "flex-row"}`}
       >
-        <Button className="w-full" variant="outline" asChild>
+        <Button className="w-full max-w-[560px]" variant="outline" asChild>
           <Link href={"/upload"}>Get free Pharmacist consultation</Link>
         </Button>
 
-        <Button className="w-full" asChild>
+        <Button className="w-full max-w-[560px]" asChild>
           <Link
             href={`tel:${sh?.pref?.Shopkeeper?.phone ? sh?.pref.Shopkeeper.phone : sh?.shops[0]?.phone}`}
           >
@@ -287,37 +287,39 @@ export default function Medicine({ params }: { params: { id: string } }) {
             <Loader2 className="h-10 w-10 animate-spin" />
           </div>
         )}
-        {sh?.pref?.Shopkeeper && (
-          <div className={!isMobile ? "mx-auto w-[80%]" : ""}>
-            <ShopkeeperCard
-              key={sh?.pref?.Shopkeeper.id}
-              address={sh?.pref?.Shopkeeper.address}
-              shopName={sh?.pref?.Shopkeeper.shopName}
-              discount={sh?.pref?.Shopkeeper.discount}
-              website={sh?.pref?.Shopkeeper.website}
-              whatsapp={sh?.pref?.Shopkeeper.whatsapp}
-              phone={sh?.pref.Shopkeeper.phone}
-              distance={sh.pref.distance.toFixed(0)}
-              hot={true}
-            />
-          </div>
-        )}
-        {sh?.shops?.length !== 0 &&
-          sh?.shops?.map((shop) => (
-            <div className={!isMobile ? "mx-auto w-[80%]" : ""} key={shop.id}>
+        <div className={!isMobile ? "flex flex-wrap justify-center" : ""}>
+          {sh?.pref?.Shopkeeper && (
+            <div className={!isMobile ? "min-w-[560px] max-w-[80%]" : ""}>
               <ShopkeeperCard
-                key={shop.id}
-                address={shop.address}
-                shopName={shop.shopName}
-                discount={shop.discount}
-                website={shop.website}
-                whatsapp={shop.whatsapp}
-                phone={shop.phone}
-                distance={shop.distance.toFixed(0)}
-                hot={false}
+                key={sh?.pref?.Shopkeeper.id}
+                address={sh?.pref?.Shopkeeper.address}
+                shopName={sh?.pref?.Shopkeeper.shopName}
+                discount={sh?.pref?.Shopkeeper.discount}
+                website={sh?.pref?.Shopkeeper.website}
+                whatsapp={sh?.pref?.Shopkeeper.whatsapp}
+                phone={sh?.pref.Shopkeeper.phone}
+                distance={sh.pref.distance.toFixed(0)}
+                hot={true}
               />
             </div>
-          ))}
+          )}
+          {sh?.shops?.length !== 0 &&
+            sh?.shops?.map((shop) => (
+              <div className={!isMobile ? "min-w-[560px] max-w-[80%]" : ""}>
+                <ShopkeeperCard
+                  key={shop.id}
+                  address={shop.address}
+                  shopName={shop.shopName}
+                  discount={shop.discount}
+                  website={shop.website}
+                  whatsapp={shop.whatsapp}
+                  phone={shop.phone}
+                  distance={shop.distance.toFixed(0)}
+                  hot={false}
+                />
+              </div>
+            ))}
+        </div>
       </div>
     </div>
   );

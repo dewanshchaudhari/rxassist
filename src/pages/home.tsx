@@ -308,37 +308,44 @@ export default function Home() {
           <Loader2 className="h-10 w-10 animate-spin" />
         </div>
       )}
-      {sh?.pref?.Shopkeeper && (
-        <div className={!isMobile ? "mx-auto w-[50%]" : ""}>
-          <ShopkeeperCard
-            key={sh?.pref?.Shopkeeper.id}
-            address={sh?.pref?.Shopkeeper.address}
-            shopName={sh?.pref?.Shopkeeper.shopName}
-            discount={sh?.pref?.Shopkeeper.discount}
-            website={sh?.pref?.Shopkeeper.website}
-            whatsapp={sh?.pref?.Shopkeeper.whatsapp}
-            phone={sh?.pref.Shopkeeper.phone}
-            distance={sh.pref.distance.toFixed(0)}
-            hot={true}
-          />
-        </div>
-      )}
-      {sh?.shops?.length !== 0 &&
-        sh?.shops?.map((shop) => (
-          <div className={!isMobile ? "mx-auto w-[50%]" : ""} key={shop.id}>
+      <div
+        className={!isMobile ? "mx-[10%] flex flex-wrap justify-center" : ""}
+      >
+        {sh?.pref?.Shopkeeper && (
+          <div className={!isMobile ? "min-w-[560px] max-w-[60%]" : ""}>
             <ShopkeeperCard
-              key={shop.id}
-              address={shop.address}
-              shopName={shop.shopName}
-              discount={shop.discount}
-              website={shop.website}
-              whatsapp={shop.whatsapp}
-              phone={shop.phone}
-              distance={shop.distance.toFixed(0)}
-              hot={false}
+              key={sh?.pref?.Shopkeeper.id}
+              address={sh?.pref?.Shopkeeper.address}
+              shopName={sh?.pref?.Shopkeeper.shopName}
+              discount={sh?.pref?.Shopkeeper.discount}
+              website={sh?.pref?.Shopkeeper.website}
+              whatsapp={sh?.pref?.Shopkeeper.whatsapp}
+              phone={sh?.pref.Shopkeeper.phone}
+              distance={sh.pref.distance.toFixed(0)}
+              hot={true}
             />
           </div>
-        ))}
+        )}
+        {sh?.shops?.length !== 0 &&
+          sh?.shops?.map((shop) => (
+            <div
+              className={!isMobile ? "min-w-[560px] max-w-[60%]" : ""}
+              key={shop.id}
+            >
+              <ShopkeeperCard
+                key={shop.id}
+                address={shop.address}
+                shopName={shop.shopName}
+                discount={shop.discount}
+                website={shop.website}
+                whatsapp={shop.whatsapp}
+                phone={shop.phone}
+                distance={shop.distance.toFixed(0)}
+                hot={false}
+              />
+            </div>
+          ))}
+      </div>
       <div
         className="mb-10 flex h-full w-full flex-col items-center justify-between p-10"
         id="works"
