@@ -128,9 +128,11 @@ export default function Medicine({ params }: { params: { id: string } }) {
               medicine.AlternativeMedicine.length !== 0 ? "mt-8" : "",
             )}
           >
-            <h3 className="ml-2 text-sm">You Searched</h3>
+            <h3 className={`ml-2 ${isMobile ? "text-sm" : "pt-2"}`}>
+              You Searched
+            </h3>
             <Image
-              className="mt-2 p-4"
+              className="mx-auto mt-2 p-4"
               src={"/product.png"}
               alt="product"
               width={200}
@@ -180,9 +182,11 @@ export default function Medicine({ params }: { params: { id: string } }) {
           )}
           {medicine.AlternativeMedicine.length !== 0 && (
             <div className="rounded-lg bg-green-100">
-              <h3 className="ml-2 text-sm">Our Recommendation</h3>
+              <h3 className={`ml-2 ${isMobile ? "text-sm" : "pt-2"}`}>
+                Our Recommendation
+              </h3>
               <Image
-                className="mt-2 p-4"
+                className="mx-auto mt-2 p-4"
                 src={"/product.png"}
                 alt="product"
                 width={200}
@@ -263,10 +267,8 @@ export default function Medicine({ params }: { params: { id: string } }) {
           )}
         </div>
       </div>
-      <div
-        className={`flex w-full items-center justify-center gap-4 p-10 ${isMobile ? "flex-col" : "flex-row"}`}
-      >
-        <Button className="w-full max-w-[560px]" variant="outline" asChild>
+      <div className="flex w-full flex-col items-center justify-center gap-4 p-10">
+        <Button className="w-full" variant="outline" asChild>
           <Link href={"/upload"}>Get free Pharmacist consultation</Link>
         </Button>
 
@@ -274,7 +276,7 @@ export default function Medicine({ params }: { params: { id: string } }) {
           <Link
             href={`tel:${sh?.pref?.Shopkeeper?.phone ? sh?.pref.Shopkeeper.phone : sh?.shops[0]?.phone}`}
           >
-            Call to order
+            Call for Free consultation
           </Link>
         </Button>
       </div>
