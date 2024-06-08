@@ -19,6 +19,7 @@ import {
   CircleDollarSign,
   EarthLock,
   FileTerminal,
+  List,
   Menu,
   Phone,
   Rss,
@@ -81,6 +82,16 @@ export function Sidebar() {
           >
             <Link href="/home#works">
               <Rss /> Blogs
+            </Link>
+          </Button>
+          <Button
+            variant="ghost"
+            className="flex w-full flex-row items-center justify-start gap-2 rounded-full"
+            onClick={() => setOpen(false)}
+            asChild
+          >
+            <Link href="/home#works">
+              <List /> JanAushadhi Product list
             </Link>
           </Button>
         </div>

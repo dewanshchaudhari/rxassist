@@ -233,8 +233,7 @@ export default function Medicine({ params }: { params: { id: string } }) {
                     </div>
                   </CardContent>
                   <div className="m-1 flex flex-row items-center justify-center gap-2 rounded-xl border p-2 text-xs">
-                    <Lock className="h-4 w-4" />
-                    {getRandomNumber(1000, 5000)}+ Customers trust
+                    Product Code {medicine.productId}
                   </div>
                 </Card>
               </div>
@@ -268,8 +267,8 @@ export default function Medicine({ params }: { params: { id: string } }) {
         </div>
       </div>
       <div className="flex w-full flex-col items-center justify-center gap-4 p-10">
-        <Button className="w-full" variant="outline" asChild>
-          <Link href={"/upload"}>Get free Pharmacist consultation</Link>
+        <Button className="w-full max-w-[560px]" variant="outline" asChild>
+          <Link href={"/upload"}>Upload Prescription (Rx to Gx Converter)</Link>
         </Button>
 
         <Button className="w-full max-w-[560px]" asChild>
@@ -307,7 +306,10 @@ export default function Medicine({ params }: { params: { id: string } }) {
           )}
           {sh?.shops?.length !== 0 &&
             sh?.shops?.map((shop) => (
-              <div className={!isMobile ? "min-w-[560px] max-w-[80%]" : ""}>
+              <div
+                className={!isMobile ? "min-w-[560px] max-w-[80%]" : ""}
+                key={shop.id}
+              >
                 <ShopkeeperCard
                   key={shop.id}
                   address={shop.address}

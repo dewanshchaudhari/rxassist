@@ -67,9 +67,9 @@ export default function Home() {
     api.user.getLocationFromZipcode.useMutation({
       onSuccess: (data) => {
         setLocation({
-          city: data.city,
-          pincode: data.pincode,
-          state: data.state,
+          city: data.city ?? "",
+          pincode: data.pincode ?? "",
+          state: data.state ?? "",
           lat: data.lat,
           lon: data.lon,
         });
@@ -84,9 +84,9 @@ export default function Home() {
     onSuccess: async (data) => {
       console.log(data);
       setLocation({
-        city: data.city,
-        pincode: data.pincode,
-        state: data.state,
+        city: data.city ?? "",
+        pincode: data.pincode ?? "",
+        state: data.state ?? "",
         lat: data.lat,
         lon: data.lon,
       });
@@ -100,9 +100,9 @@ export default function Home() {
     if (data) {
       console.log("Setting data");
       setLocation({
-        city: data.city,
-        pincode: data.zip,
-        state: data.regionName,
+        city: data.city ?? "",
+        pincode: data.zip ?? "",
+        state: data.regionName ?? "",
         lat: data.lat.toString(),
         lon: data.lon.toString(),
       });
