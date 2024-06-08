@@ -37,7 +37,13 @@ import {
 } from "./ui/dialog";
 const requestId = generateRequestID();
 const TRUECALLER_URL = `truecallersdk://truesdk/web_verify?requestNonce=${requestId}&partnerKey=${TRUECALLER.partnerKey}&partnerName=${TRUECALLER.partnerName}&lang=${TRUECALLER.lang}&privacyUrl=${TRUECALLER.privacyUrl}&termsUrl=${TRUECALLER.termsUrl}&loginPrefix=${TRUECALLER.loginPrefix}&loginSuffix=${TRUECALLER.loginSuffix}&ctaPrefix=${TRUECALLER.ctaPrefix}&ctaColor=${TRUECALLER.ctaColor}&ctaTextColor=${TRUECALLER.ctaTextColor}&btnShape=${TRUECALLER.btnShape}&skipOption=${TRUECALLER.skipOption}&ttl=${TRUECALLER.ttl}`;
-export function PhoneAuthDrawer({ open }: { open: boolean }) {
+export function PhoneAuthDrawer({
+  open,
+  rounded = false,
+}: {
+  open: boolean;
+  rounded?: boolean;
+}) {
   const isMobile = useMediaQuery("(max-width: 640px)");
 
   const [phone, setPhone] = React.useState<E164Number>();
@@ -109,7 +115,10 @@ export function PhoneAuthDrawer({ open }: { open: boolean }) {
   return isMobile ? (
     <Drawer open={show} onOpenChange={setShow}>
       <DrawerTrigger asChild className="p-4">
-        <Button variant="default" className="w-full">
+        <Button
+          variant="default"
+          className={`w-full ${rounded ? "h-12 rounded-full" : ""}`}
+        >
           Login
         </Button>
       </DrawerTrigger>
@@ -197,7 +206,10 @@ export function PhoneAuthDrawer({ open }: { open: boolean }) {
   ) : (
     <Dialog open={show} onOpenChange={setShow}>
       <DialogTrigger asChild className="p-4">
-        <Button variant="default" className="w-full">
+        <Button
+          variant="default"
+          className={`w-full ${rounded ? "h-12 rounded-full" : ""}`}
+        >
           Login
         </Button>
       </DialogTrigger>

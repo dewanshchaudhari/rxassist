@@ -27,11 +27,11 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { PhoneAuthDrawer } from "./PhoneAuthDrawer";
 
 export function Sidebar() {
   const [open, setOpen] = React.useState(false);
   const { status } = useSession();
-  const router = useRouter();
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
@@ -44,12 +44,7 @@ export function Sidebar() {
           <SheetTitle>Welcome to {env.NEXT_PUBLIC_APP_NAME}</SheetTitle>
           <SheetDescription>
             {status === "unauthenticated" && (
-              <Button
-                className="h-12 w-full rounded-full"
-                onClick={() => router.push("/login")}
-              >
-                Login
-              </Button>
+              <PhoneAuthDrawer open={false} rounded={true} />
             )}
             <Separator orientation="horizontal" className="my-4" />
           </SheetDescription>
